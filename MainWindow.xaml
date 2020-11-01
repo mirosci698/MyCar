@@ -7,6 +7,139 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <TabControl>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Cars" />
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" Text="Actual id" />
+                    <TextBlock Grid.Column="1" Grid.Row="0" Margin="5" Text="id" />
+                    <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" Text="Manufacturer" />
+                    <TextBox Grid.Column="1" Grid.Row="1" Margin="5" Name="manufacturer" MinWidth="125" />
+                    <TextBlock Grid.Column="0" Grid.Row="2" Margin="5" Text="Model" />
+                    <TextBox Grid.Column="1" Grid.Row="2" Margin="5" Name="model" MinWidth="125" />
+                    <TextBlock Grid.Column="0" Grid.Row="3" Margin="5" Text="First Registration Date" />
+                    <TextBox Grid.Column="1" Grid.Row="3" Margin="5" Name="firstRegistrationDate" MinWidth="125" />
+                    <TextBlock Grid.Column="0" Grid.Row="4" Margin="5" Text="Actual Mileage" />
+                    <TextBox Grid.Column="1" Grid.Row="4" Margin="5" Name="actualMileage" MinWidth="125" />
+                    <TextBlock Grid.Column="0" Grid.Row="5" Margin="5" Text="Vin" />
+                    <TextBox Grid.Column="1" Grid.Row="5" Margin="5" Name="vin" MinWidth="125" />
+                    <TextBlock Grid.Column="0" Grid.Row="6" Margin="5" Text="Purchase Date" />
+                    <TextBox Grid.Column="1" Grid.Row="6" Margin="5" Name="purchaseDate" MinWidth="125" />
+                    <TextBlock Grid.Column="0" Grid.Row="7" Margin="5" Text="Purchase Mileage" />
+                    <TextBox Grid.Column="1" Grid.Row="7" Margin="5" Name="purchaseMileage" MinWidth="125" />
+                    <TextBlock Grid.Column="0" Grid.Row="8" Margin="5" Text="Licence Plate" />
+                    <TextBox Grid.Column="1" Grid.Row="8" Margin="5" Name="licencePlate" MinWidth="125" />
+                    <ComboBox Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" />
+                    <Button Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="2" Margin="5">Create</Button>
+                    <Button Grid.Column="0" Grid.Row="12" Margin="5">Update</Button>
+                    <Button Grid.Column="1" Grid.Row="12" Margin="5">Delete</Button>
+                </Grid>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Expenses" />
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" Text="Actual id" />
+                    <TextBlock Grid.Column="1" Grid.Row="0" Margin="5" Text="id" />
+                    <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" Text="Date" />
+                    <TextBox Grid.Column="1" Grid.Row="1" Margin="5" Name="expenseDate" MinWidth="125" />
+                    <TextBlock Grid.Column="0" Grid.Row="2" Margin="5" Text="Place" />
+                    <TextBox Grid.Column="1" Grid.Row="2" Margin="5" Name="expensePlace" MinWidth="125" />
+                    <TextBlock Grid.Column="0" Grid.Row="3" Margin="5" Text="Mileage" />
+                    <TextBox Grid.Column="1" Grid.Row="3" Margin="5" Name="expenseMileage" MinWidth="125" />
+                    <TextBlock Grid.Column="0" Grid.Row="4" Margin="5" Text="Price" />
+                    <TextBox Grid.Column="1" Grid.Row="4" Margin="5" Name="expensePrice" MinWidth="125" />
+                    <TextBlock Grid.Column="0" Grid.Row="5" Margin="5" Text="Info" />
+                    <TextBox Grid.Column="1" Grid.Row="5" Margin="5" Name="expenseInfo" MinWidth="125" />
+                    <TextBlock Grid.Column="0" Grid.Row="6" Margin="5" Text="Type info" />
+                    <ComboBox Grid.Row="6" Grid.Column="1" Margin="5" />
+                    <ComboBox Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" />
+                    <Button Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="2" Margin="5">Create</Button>
+                    <Button Grid.Column="0" Grid.Row="10" Margin="5">Update</Button>
+                    <Button Grid.Column="1" Grid.Row="10" Margin="5">Delete</Button>
+                </Grid>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Reminders" />
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" Text="Actual id" />
+                    <TextBlock Grid.Column="1" Grid.Row="0" Margin="5" Text="id" />
+                    <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" Text="Date" />
+                    <TextBox Grid.Column="1" Grid.Row="1" Margin="5" Name="reminderDate" MinWidth="125" />
+                    <TextBlock Grid.Column="0" Grid.Row="2" Margin="5" Text="Milleage" />
+                    <TextBox Grid.Column="1" Grid.Row="2" Margin="5" Name="reminderMilleage" MinWidth="125" />
+                    <TextBlock Grid.Column="0" Grid.Row="3" Margin="5" Text="Info" />
+                    <TextBox Grid.Column="1" Grid.Row="3" Margin="5" Name="reminderInfo" MinWidth="125" />
+                    <TextBlock Grid.Column="0" Grid.Row="4" Margin="5" Text="Is checked" />
+                    <CheckBox Grid.Column="1" Grid.Row="4" Margin="5" Name="reminderIsChecked" MinWidth="125">Is checked</CheckBox>
+                    <ComboBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" />
+                    <Button Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Margin="5">Create</Button>
+                    <Button Grid.Column="0" Grid.Row="8" Margin="5">Update</Button>
+                    <Button Grid.Column="1" Grid.Row="8" Margin="5">Delete</Button>
+                </Grid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
