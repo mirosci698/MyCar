@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Newtonsoft.Json;
 
 namespace MyCar
 {
@@ -37,17 +38,25 @@ namespace MyCar
         {
             string Login = login.Text;
             string Password = password.Text;
+            string utfString = LoginOperation(Login, Password);
+            if (errors.Contains(utfString))
+                MessageBox.Show(utfString, "Error", MessageBoxButton.OK);
+            else
+            {
+                UserWrapper userWrapper = JsonConvert.DeserializeObject<UserWrapper>(utfString);
+                Singleton.GetInstance().ActualUser = userWrapper;
+            }
+        }
+
+        private string LoginOperation(string Login, string Password)
+        {
             Dictionary<string, string> parameters = new Dictionary<string, string>();
             parameters.Add("Login", Login);
             parameters.Add("Password", Password);
             RequestProvider requestProvider = new RequestProvider(loginUri);
             requestProvider.Parameters = parameters;
             byte[] response = requestProvider.performPost();
-            string utfString = Encoding.UTF8.GetString(response, 0, response.Length);
-            if (errors.Contains(utfString))
-                MessageBox.Show(utfString, "Error", MessageBoxButton.OK);
-
-
+            return Encoding.UTF8.GetString(response, 0, response.Length);
         }
 
         private void Register_Click(object sender, RoutedEventArgs e)
@@ -63,6 +72,10 @@ namespace MyCar
             string utfString = Encoding.UTF8.GetString(response, 0, response.Length);
             if (errors.Contains(utfString))
                 MessageBox.Show(utfString, "Error", MessageBoxButton.OK);
+            else if (utfString == "Registered")
+            {
+                UserWrapper userWrapper = new UserWrapper()
+            }
         }
 
             public void Login_Closing(object sender, CancelEventArgs e)
