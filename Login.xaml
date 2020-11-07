@@ -21,7 +21,7 @@
         <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" Text="Login" />
         <TextBox Grid.Column="1" Grid.Row="0" Margin="5" Name="login" MinWidth="125" />
         <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" Text="Password" />
-        <TextBox Grid.Column="1" Grid.Row="1" Margin="5" Name="password" MinWidth="125" />
+        <PasswordBox Grid.Column="1" Grid.Row="1" Margin="5" Name="password" MinWidth="125" />
         <Button Grid.Column="0" Grid.Row="2" Margin="5" Click="Register_Click">Register</Button>
         <Button Grid.Column="1" Grid.Row="2" Margin="5" Click="Login_Click">Login</Button>
     </Grid>

@@ -16,6 +16,10 @@ namespace MyCar
 
         public int CarActualMileage { get; set; }
 
+        public string CarVin { get; set; }
 
+        public string CarPurchaseDate { get; set; }
+        public int CarPurchaseMileage { get; set; }
+        public string CarLicencePlate { get; set; }
     }
 }

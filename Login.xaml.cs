@@ -39,7 +39,7 @@ namespace MyCar
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             string Login = login.Text;
-            string Password = password.Text;
+            string Password = password.Password;
             string trimmedLogin = String.Concat(Login.Where(c => !Char.IsWhiteSpace(c)));
             string trimmedPassword = String.Concat(Password.Where(c => !Char.IsWhiteSpace(c)));
             if (!Validation(Login, Password, trimmedLogin, trimmedPassword))
@@ -59,7 +59,7 @@ namespace MyCar
         private void Register_Click(object sender, RoutedEventArgs e)
         {
             string Login = login.Text;
-            string Password = password.Text;
+            string Password = password.Password;
             string trimmedLogin = String.Concat(Login.Where(c => !Char.IsWhiteSpace(c)));
             string trimmedPassword = String.Concat(Password.Where(c => !Char.IsWhiteSpace(c)));
             if (!Validation(Login, Password, trimmedLogin, trimmedPassword))
@@ -70,11 +70,11 @@ namespace MyCar
             else if (utfString == "Registered")
             {
                 string utfStringLogin = UserOperation(Login, Password, loginUri);
-                if (errors.Contains(utfString))
-                    MessageBox.Show(utfString, "Error", MessageBoxButton.OK);
+                if (errors.Contains(utfStringLogin))
+                    MessageBox.Show(utfStringLogin, "Error", MessageBoxButton.OK);
                 else
                 {
-                    UserWrapper userWrapper = JsonConvert.DeserializeObject<UserWrapper>(utfString);
+                    UserWrapper userWrapper = JsonConvert.DeserializeObject<UserWrapper>(utfStringLogin);
                     Singleton.GetInstance().ActualUser = userWrapper;
                     IsLogged = true;
                     ShowMainWindow();

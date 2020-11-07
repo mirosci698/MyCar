@@ -24,6 +24,7 @@ namespace MyCar
         {
             //comment
             InitializeComponent();
+
         }
 
     }
