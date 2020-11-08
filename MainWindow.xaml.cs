@@ -15,6 +15,7 @@ using System.Windows.Media.Converters;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Serialization;
 using Newtonsoft.Json;
 
 namespace MyCar
@@ -30,9 +31,13 @@ namespace MyCar
 
         private int reminderCounter = 1;
 
+        private Reminder reminderForBinding;
+        
+        private int expenseCounter = 1;
+
         private Car carForBinding;
 
-        private Reminder reminderForBinding;
+        private Expense expenseForBinding;
 
         public MainWindow()
         {
@@ -44,7 +49,31 @@ namespace MyCar
             foreach (int number in carList)
                 cmbList.Add(new CmbElement { Id = counter++, Value = number.ToString() });
             comboBoxCars.ItemsSource = cmbList;
-            comboBoxCars.SelectedItem = cmbElementDefault;
+            comboBoxCars.SelectedItem = cmbElementDefault;  
+        }
+
+        private void setDataBindingForExpenseComboBox()
+        {
+            if (carForBinding.CarId == null)
+            {
+                ObservableCollection<CmbElement> cmbListExpenses = new ObservableCollection<CmbElement>();
+                CmbElement cmbElementDefault = new CmbElement { Id = 0, Value = "<Create>" };
+                cmbListExpenses.Add(cmbElementDefault);
+                comboBoxExpenses.ItemsSource = cmbListExpenses;
+                comboBoxExpenses.SelectedItem = cmbElementDefault;
+            }
+            else
+            {
+                List<int> expenseList = Singleton.GetInstance().ActualCar.ExpenseList;
+                ObservableCollection<CmbElement> cmbListExpenses = new ObservableCollection<CmbElement>();
+                CmbElement cmbElementDefault = new CmbElement { Id = 0, Value = "<Create>" };
+                cmbListExpenses.Add(cmbElementDefault);
+                expenseCounter = 1;
+                foreach (int number in expenseList)
+                    cmbListExpenses.Add(new CmbElement { Id = expenseCounter++, Value = number.ToString() });
+                comboBoxExpenses.ItemsSource = cmbListExpenses;
+                comboBoxExpenses.SelectedItem = cmbElementDefault;
+            }
         }
 
         private void setDataBindingForReminderComboBox()
@@ -109,6 +138,10 @@ namespace MyCar
                 comboBoxReminders.SelectedItem = cmbElementDefault;
                 setDataBindingForReminderComboBox();
                 disableReminderButtons();
+                comboBoxExpenses.SelectedItem = cmbElementDefault;
+                setDataBindingForExpenseComboBox();
+                disableExpenseButtons();
+
             }
             else
             {
@@ -119,6 +152,7 @@ namespace MyCar
                     carForBinding = car;
                     CmbElement cmbElementDefault = new CmbElement { Id = 0, Value = "<Create>" };
                     setDataBindingForReminderComboBox();
+                    setDataBindingForExpenseComboBox();
                 }
                 catch (Exception)
                 {
@@ -146,6 +180,27 @@ namespace MyCar
             buttonCreate.IsEnabled = false;
             buttonUpdate.IsEnabled = true;
             buttonDelete.IsEnabled = true;
+        }
+
+        private void setExpenseButtonsForCreating()
+        {
+            expenseButtonCreate.IsEnabled = true;
+            expenseButtonUpdate.IsEnabled = false;
+            expenseButtonDelete.IsEnabled = false;
+        }
+
+        private void setExpenseButtonsForUpdatingAndDeleting()
+        {
+            expenseButtonCreate.IsEnabled = false;
+            expenseButtonUpdate.IsEnabled = true;
+            expenseButtonDelete.IsEnabled = true;
+        }
+
+        private void disableExpenseButtons()
+        {
+            expenseButtonCreate.IsEnabled = false;
+            expenseButtonUpdate.IsEnabled = false;
+            expenseButtonDelete.IsEnabled = false;
         }
 
         private Dictionary<string, string> getDictionaryFromCar(Car car)
@@ -177,6 +232,25 @@ namespace MyCar
             result.Add("Milleage", reminder.ReminderMilleage.ToString());
             result.Add("Info", reminder.ReminderInfo);
             result.Add("IsChecked", reminder.ReminderIsChecked.ToString());
+            result.Add("CarId", Singleton.GetInstance().ActualCar.Id.ToString());
+            foreach (var key in result)
+            {
+                if (key.Value != null)
+                    key.Value.Replace(" ", "%20");
+            }
+            return result;
+        }
+        
+        private Dictionary<string, string> getDictionaryFromExpense(Expense expense)
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            result.Add("Id", expense.ExpenseId.ToString());
+            result.Add("Date", expense.ExpenseDate);
+            result.Add("Place", expense.ExpensePlace);
+            result.Add("Mileage", expense.ExpenseMileage.ToString());
+            result.Add("Price", expense.ExpensePrice.ToString());
+            result.Add("Info", expense.ExpenseInfo);
+            result.Add("TypeInfo", expense.ExpenseTypeInfo);
             result.Add("CarId", Singleton.GetInstance().ActualCar.Id.ToString());
             foreach (var key in result)
             {
@@ -218,9 +292,27 @@ namespace MyCar
                 MessageBox.Show(result, "Error", MessageBoxButton.OK);
         }
 
+
+        private void expenseButtonCreate_Click(object sender, RoutedEventArgs e)
+        {
+            string result = ExpenseCRUDOperations.CreateExpense(comboBoxExpenses, getDictionaryFromExpense(expenseForBinding), ref expenseCounter);
+
+            if (result != "Correct")
+                MessageBox.Show(result, "Error", MessageBoxButton.OK);
+        }
+
         private void reminderButtonUpdate_Click(object sender, RoutedEventArgs e)
         {
             string result = ReminderCRUDOperations.UpdateReminder(getDictionaryFromReminder(reminderForBinding));
+            if (result != "Update")
+                MessageBox.Show(result, "Error", MessageBoxButton.OK);
+            else
+                MessageBox.Show(result, "Info", MessageBoxButton.OK);
+        }
+
+        private void expenseButtonUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            string result = ExpenseCRUDOperations.UpdateExpense(getDictionaryFromExpense(expenseForBinding));
             if (result != "Update")
                 MessageBox.Show(result, "Error", MessageBoxButton.OK);
             else
@@ -235,6 +327,16 @@ namespace MyCar
             else
                 MessageBox.Show(result, "Info", MessageBoxButton.OK);
         }
+        
+        private void expenseButtonDelete_Click(object sender, RoutedEventArgs e)
+        {
+            string result = ExpenseCRUDOperations.DeleteExpenseById(Singleton.GetInstance().ActualExpense.Id, comboBoxExpenses);
+            if (result != "Removed")
+                MessageBox.Show(result, "Error", MessageBoxButton.OK);
+            else
+                MessageBox.Show(result, "Info", MessageBoxButton.OK);
+        }
+
 
         private void comboBoxReminders_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -264,9 +366,40 @@ namespace MyCar
                     comboBoxReminders.SelectedItem = cmbElementDefault;
                     return;
                 }
-
             }
             RemindersTab.DataContext = reminderForBinding;
+        }
+
+        private void comboBoxExpense_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var item = (CmbElement)comboBoxExpenses.SelectedItem;
+            string value;
+            if (item == null)
+                value = "<Create>";
+            else
+                value = item.Value;
+            if (value == "<Create>")
+            {
+                setExpenseButtonsForCreating();
+                expenseForBinding = new Expense();
+            }
+            else
+            {
+                try
+                {
+                    setExpenseButtonsForUpdatingAndDeleting();
+                    Expense expense = ExpenseCRUDOperations.ReadExpenseById(Int32.Parse(value));
+                    expenseForBinding = expense;
+                }
+                catch (Exception)
+                {
+                    ShowErrorInfo("Error in reading proper id.");
+                    CmbElement cmbElementDefault = new CmbElement { Id = 0, Value = "<Create>" };
+                    comboBoxExpenses.SelectedItem = cmbElementDefault;
+                    return;
+                }
+            }
+            ExpenseTab.DataContext = expenseForBinding;
         }
     }
 }
