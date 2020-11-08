@@ -6,7 +6,7 @@ namespace MyCar
 {
     class Reminder
     {
-        public int ReminderId { get; set; }
+        public int? ReminderId { get; set; }
         public string ReminderDate { get; set; }
         public int? ReminderMilleage { get; set; }
         public string ReminderInfo { get; set; }
