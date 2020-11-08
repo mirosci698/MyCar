@@ -9,18 +9,18 @@ namespace MyCar
         public int Id { get; set; }
         public string Manufacturer { get; set; }
         public string Model { get; set; }
-        public DateTime FirstRegistrationDate { get; set; }
+        public string FirstRegistrationDate { get; set; }
         public int ActualMileage { get; set; }
         public string Vin { get; set; }
-        public DateTime PurchaseDate { get; set; }
+        public string PurchaseDate { get; set; }
         public int PurchaseMileage { get; set; }
         public string LicencePlate { get; set; }
         public int UserId { get; set; }
         public List<int> ExpenseList { get; set; }
         public List<int> ReminderList { get; set; }
 
-        public CarWrapper(int Id, string Manufacturer, string Model, DateTime FirstRegistrationDate,
-            int ActualMileage, string Vin, DateTime PurchaseDate, int PurchaseMileage, 
+        public CarWrapper(int Id, string Manufacturer, string Model, string FirstRegistrationDate,
+            int ActualMileage, string Vin, string PurchaseDate, int PurchaseMileage, 
             string LicencePlate, int userId, List<int> expenseList, List<int> reminderList)
         {
             this.Id = Id;
