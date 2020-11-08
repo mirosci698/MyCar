@@ -29,6 +29,10 @@ namespace MyCar
 
         private bool isCreating;
 
+        private int reminderCounter = 1;
+
+        private Reminder reminderForBinding;
+        
         private int expenseCounter = 1;
 
         private Car carForBinding;
@@ -72,6 +76,51 @@ namespace MyCar
             }
         }
 
+        private void setDataBindingForReminderComboBox()
+        {
+            if (carForBinding.CarId == null)
+            {
+                ObservableCollection<CmbElement> cmbListReminders = new ObservableCollection<CmbElement>();
+                CmbElement cmbElementDefault = new CmbElement { Id = 0, Value = "<Create>" };
+                cmbListReminders.Add(cmbElementDefault);
+                comboBoxReminders.ItemsSource = cmbListReminders;
+                comboBoxReminders.SelectedItem = cmbElementDefault;
+            }
+            else
+            {
+                List<int> reminderList = Singleton.GetInstance().ActualCar.ReminderList;
+                ObservableCollection<CmbElement> cmbListReminders = new ObservableCollection<CmbElement>();
+                CmbElement cmbElementDefault = new CmbElement { Id = 0, Value = "<Create>" };
+                cmbListReminders.Add(cmbElementDefault);
+                reminderCounter = 1;
+                foreach (int number in reminderList)
+                    cmbListReminders.Add(new CmbElement { Id = reminderCounter++, Value = number.ToString() });
+                comboBoxReminders.ItemsSource = cmbListReminders;
+                comboBoxReminders.SelectedItem = cmbElementDefault;
+            }
+        }
+
+        private void setReminderButtonsForCreating()
+        {
+            reminderButtonCreate.IsEnabled = true;
+            reminderButtonUpdate.IsEnabled = false;
+            reminderButtonDelete.IsEnabled = false;
+        }
+
+        private void setReminderButtonsForUpdatingAndDeleting()
+        {
+            reminderButtonCreate.IsEnabled = false;
+            reminderButtonUpdate.IsEnabled = true;
+            reminderButtonDelete.IsEnabled = true;
+        }
+
+        private void disableReminderButtons()
+        {
+            reminderButtonCreate.IsEnabled = false;
+            reminderButtonUpdate.IsEnabled = false;
+            reminderButtonDelete.IsEnabled = false;
+        }
+
         public static void ShowErrorInfo(string encodedResponse)
         {
             MessageBox.Show(encodedResponse, "Error", MessageBoxButton.OK);
@@ -84,11 +133,15 @@ namespace MyCar
             if (value == "<Create>")
             {
                 setButtonsForCreating();
-                carForBinding = new Car();  
+                carForBinding = new Car();
                 CmbElement cmbElementDefault = new CmbElement { Id = 0, Value = "<Create>" };
+                comboBoxReminders.SelectedItem = cmbElementDefault;
+                setDataBindingForReminderComboBox();
+                disableReminderButtons();
                 comboBoxExpenses.SelectedItem = cmbElementDefault;
                 setDataBindingForExpenseComboBox();
                 disableExpenseButtons();
+
             }
             else
             {
@@ -98,8 +151,8 @@ namespace MyCar
                     Car car = CarCRUDOperations.ReadCarById(Int32.Parse(value));
                     carForBinding = car;
                     CmbElement cmbElementDefault = new CmbElement { Id = 0, Value = "<Create>" };
+                    setDataBindingForReminderComboBox();
                     setDataBindingForExpenseComboBox();
-                    //comboBoxExpenses.SelectedItem = cmbElementDefault;
                 }
                 catch (Exception)
                 {
@@ -171,6 +224,23 @@ namespace MyCar
             return result;
         }
 
+        private Dictionary<string, string> getDictionaryFromReminder(Reminder reminder)
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            result.Add("Id", reminder.ReminderId.ToString());
+            result.Add("Date", reminder.ReminderDate);
+            result.Add("Milleage", reminder.ReminderMilleage.ToString());
+            result.Add("Info", reminder.ReminderInfo);
+            result.Add("IsChecked", reminder.ReminderIsChecked.ToString());
+            result.Add("CarId", Singleton.GetInstance().ActualCar.Id.ToString());
+            foreach (var key in result)
+            {
+                if (key.Value != null)
+                    key.Value.Replace(" ", "%20");
+            }
+            return result;
+        }
+        
         private Dictionary<string, string> getDictionaryFromExpense(Expense expense)
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
@@ -215,11 +285,29 @@ namespace MyCar
                 MessageBox.Show(result, "Info", MessageBoxButton.OK);
         }
 
+        private void reminderButtonCreate_Click(object sender, RoutedEventArgs e)
+        {
+            string result = ReminderCRUDOperations.CreateReminder(comboBoxReminders, getDictionaryFromReminder(reminderForBinding), ref reminderCounter);
+            if (result != "Correct")
+                MessageBox.Show(result, "Error", MessageBoxButton.OK);
+        }
+
+
         private void expenseButtonCreate_Click(object sender, RoutedEventArgs e)
         {
             string result = ExpenseCRUDOperations.CreateExpense(comboBoxExpenses, getDictionaryFromExpense(expenseForBinding), ref expenseCounter);
+
             if (result != "Correct")
                 MessageBox.Show(result, "Error", MessageBoxButton.OK);
+        }
+
+        private void reminderButtonUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            string result = ReminderCRUDOperations.UpdateReminder(getDictionaryFromReminder(reminderForBinding));
+            if (result != "Update")
+                MessageBox.Show(result, "Error", MessageBoxButton.OK);
+            else
+                MessageBox.Show(result, "Info", MessageBoxButton.OK);
         }
 
         private void expenseButtonUpdate_Click(object sender, RoutedEventArgs e)
@@ -231,6 +319,15 @@ namespace MyCar
                 MessageBox.Show(result, "Info", MessageBoxButton.OK);
         }
 
+        private void reminderButtonDelete_Click(object sender, RoutedEventArgs e)
+        {
+            string result = ReminderCRUDOperations.DeleteReminderById(Singleton.GetInstance().ActualReminder.Id, comboBoxReminders);
+            if (result != "Removed")
+                MessageBox.Show(result, "Error", MessageBoxButton.OK);
+            else
+                MessageBox.Show(result, "Info", MessageBoxButton.OK);
+        }
+        
         private void expenseButtonDelete_Click(object sender, RoutedEventArgs e)
         {
             string result = ExpenseCRUDOperations.DeleteExpenseById(Singleton.GetInstance().ActualExpense.Id, comboBoxExpenses);
@@ -238,6 +335,39 @@ namespace MyCar
                 MessageBox.Show(result, "Error", MessageBoxButton.OK);
             else
                 MessageBox.Show(result, "Info", MessageBoxButton.OK);
+        }
+
+
+        private void comboBoxReminders_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var item = (CmbElement)comboBoxReminders.SelectedItem;
+            string value;
+            if (item == null)
+                value = "<Create>";
+            else
+                value = item.Value;
+            if (value == "<Create>")
+            {
+                setReminderButtonsForCreating();
+                reminderForBinding = new Reminder();
+            }
+            else
+            {
+                try
+                {
+                    setReminderButtonsForUpdatingAndDeleting();
+                    Reminder reminder = ReminderCRUDOperations.ReadReminderById(Int32.Parse(value));
+                    reminderForBinding = reminder;
+                }
+                catch (Exception)
+                {
+                    ShowErrorInfo("Error in reading proper id.");
+                    CmbElement cmbElementDefault = new CmbElement { Id = 0, Value = "<Create>" };
+                    comboBoxReminders.SelectedItem = cmbElementDefault;
+                    return;
+                }
+            }
+            RemindersTab.DataContext = reminderForBinding;
         }
 
         private void comboBoxExpense_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -268,7 +398,6 @@ namespace MyCar
                     comboBoxExpenses.SelectedItem = cmbElementDefault;
                     return;
                 }
-
             }
             ExpenseTab.DataContext = expenseForBinding;
         }

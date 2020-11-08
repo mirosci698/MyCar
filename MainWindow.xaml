@@ -120,7 +120,7 @@
                     <Button Name ="expenseButtonDelete" Click="expenseButtonDelete_Click" Grid.Column="1" Grid.Row="10" Margin="5">Delete</Button>
                 </Grid>
             </TabItem>
-            <TabItem>
+            <TabItem Name="RemindersTab">
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Reminders" />
@@ -143,19 +143,27 @@
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" Text="Actual id" />
-                    <TextBlock Grid.Column="1" Grid.Row="0" Margin="5" Text="id" />
+                    <TextBlock Text="{Binding ReminderId}" Grid.Column="1" Grid.Row="0" Margin="5" />
                     <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" Text="Date" />
-                    <TextBox Grid.Column="1" Grid.Row="1" Margin="5" Name="reminderDate" MinWidth="125" />
+                    <TextBox Text="{Binding ReminderDate}" Grid.Column="1" Grid.Row="1" Margin="5" Name="reminderDate" MinWidth="125" />
                     <TextBlock Grid.Column="0" Grid.Row="2" Margin="5" Text="Milleage" />
-                    <TextBox Grid.Column="1" Grid.Row="2" Margin="5" Name="reminderMilleage" MinWidth="125" />
+                    <TextBox Text="{Binding ReminderMilleage}" Grid.Column="1" Grid.Row="2" Margin="5" Name="reminderMilleage" MinWidth="125" />
                     <TextBlock Grid.Column="0" Grid.Row="3" Margin="5" Text="Info" />
-                    <TextBox Grid.Column="1" Grid.Row="3" Margin="5" Name="reminderInfo" MinWidth="125" />
+                    <TextBox Text="{Binding ReminderInfo}" Grid.Column="1" Grid.Row="3" Margin="5" Name="reminderInfo" MinWidth="125" />
                     <TextBlock Grid.Column="0" Grid.Row="4" Margin="5" Text="Is checked" />
-                    <CheckBox Grid.Column="1" Grid.Row="4" Margin="5" Name="reminderIsChecked" MinWidth="125">Is checked</CheckBox>
-                    <ComboBox Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" />
-                    <Button Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Margin="5">Create</Button>
-                    <Button Grid.Column="0" Grid.Row="8" Margin="5">Update</Button>
-                    <Button Grid.Column="1" Grid.Row="8" Margin="5">Delete</Button>
+                    <CheckBox IsChecked="{Binding ReminderIsChecked}" Grid.Column="1" Grid.Row="4" Margin="5" Name="reminderIsChecked" MinWidth="125">Is checked</CheckBox>
+                    <ComboBox SelectionChanged="comboBoxReminders_SelectionChanged" Name="comboBoxReminders" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Value}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button Name="reminderButtonCreate" Click="reminderButtonCreate_Click" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" Margin="5">Create</Button>
+                    <Button Name="reminderButtonUpdate" Click="reminderButtonUpdate_Click" Grid.Column="0" Grid.Row="8" Margin="5">Update</Button>
+                    <Button Name="reminderButtonDelete" Click="reminderButtonDelete_Click" Grid.Column="1" Grid.Row="8" Margin="5">Delete</Button>
                 </Grid>
             </TabItem>
         </TabControl>

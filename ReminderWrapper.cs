@@ -7,13 +7,13 @@ namespace MyCar
     class ReminderWrapper
     {
         public int Id { get; set; }
-        public DateTime? Date { get; set; }
+        public string Date { get; set; }
         public int? Milleage { get; set; }
         public string Info { get; set; }
         public bool IsChecked { get; set; }
         public int CarId { get; set; }
 
-        public ReminderWrapper(int Id, DateTime Date, int Milleage, string Info,
+        public ReminderWrapper(int Id, string Date, int? Milleage, string Info,
             bool IsChecked, int carId)
         {
             this.Id = Id;
