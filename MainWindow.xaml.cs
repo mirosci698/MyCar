@@ -401,5 +401,13 @@ namespace MyCar
             }
             ExpenseTab.DataContext = expenseForBinding;
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (MessageBox.Show("Do you want to close application?", "Exit", MessageBoxButton.YesNo) == MessageBoxResult.No)
+                e.Cancel = true;
+            else
+                Application.Current.Shutdown();
+        }
     }
 }
