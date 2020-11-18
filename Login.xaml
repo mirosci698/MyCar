@@ -1,0 +1,28 @@
+﻿<Window x:Class="MyCar.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyCar"
+        mc:Ignorable="d"
+        Closing="Login_Closing"
+        ResizeMode="NoResize"
+        Title="Login" Height="150" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Grid.Row="0" Margin="5" Text="Login" />
+        <TextBox Grid.Column="1" Grid.Row="0" Margin="5" Name="login" MinWidth="125" />
+        <TextBlock Grid.Column="0" Grid.Row="1" Margin="5" Text="Password" />
+        <PasswordBox Grid.Column="1" Grid.Row="1" Margin="5" Name="password" MinWidth="125" />
+        <Button Grid.Column="0" Grid.Row="2" Margin="5" Click="Register_Click">Register</Button>
+        <Button Grid.Column="1" Grid.Row="2" Margin="5" Click="Login_Click">Login</Button>
+    </Grid>
+</Window>
